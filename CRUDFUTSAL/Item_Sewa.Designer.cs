@@ -41,6 +41,8 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dgvItem = new System.Windows.Forms.DataGridView();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtIdItem = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -159,11 +161,30 @@
             this.dgvItem.TabIndex = 12;
             this.dgvItem.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellContentClick);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(50, 170);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 16);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "ID Item";
+            // 
+            // txtIdItem
+            // 
+            this.txtIdItem.Location = new System.Drawing.Point(225, 170);
+            this.txtIdItem.Name = "txtIdItem";
+            this.txtIdItem.Size = new System.Drawing.Size(185, 22);
+            this.txtIdItem.TabIndex = 14;
+            this.txtIdItem.TextChanged += new System.EventHandler(this.txtIdItem_TextChanged);
+            // 
             // Item_Sewa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtIdItem);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.dgvItem);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnEdit);
@@ -201,5 +222,7 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DataGridView dgvItem;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtIdItem;
     }
 }

@@ -26,11 +26,12 @@ namespace CRUDFUTSAL
 
         private void ClearForm()
         {
+            txtIdItem.Clear();
             txtNamaItem.Clear();
             txtDeskripsi.Clear();
             txtHargaSewa.Clear();
             txtStok.Clear();
-            txtNamaItem.Focus();
+            txtIdItem.Focus();
         }
 
         private void LoadData()
@@ -40,18 +41,17 @@ namespace CRUDFUTSAL
                 try
                 {
                     conn.Open();
-                    string query = "SELECT id_item, nama_item, deskripsi, harga_sewa_per_jam, stok FROM Item_Sewa";
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Item_Sewa", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvItem.DataSource = dt;
-                    ClearForm();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message, "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Gagal mengambil data: " + ex.Message);
                 }
             }
+            ClearForm();
 
         }
 
@@ -61,39 +61,32 @@ namespace CRUDFUTSAL
             {
                 try
                 {
-                    if (txtNamaItem.Text == "" || txtHargaSewa.Text == "" || txtStok.Text == "")
-                    {
-                        MessageBox.Show("Harap lengkapi data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
                     conn.Open();
-                    string query = "INSERT INTO Item_Sewa (id_item, nama_item, deskripsi, harga_sewa_per_jam, stok) VALUES (@id_item, @nama_item, @deskripsi, @harga, @stok)";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        string idItem = "IT" + DateTime.Now.ToString("ddMMyyyyHHmmss");
 
-                        cmd.Parameters.AddWithValue("@id_item", idItem);
-                        cmd.Parameters.AddWithValue("@nama_item", txtNamaItem.Text.Trim());
-                        cmd.Parameters.AddWithValue("@deskripsi", txtDeskripsi.Text.Trim());
-                        cmd.Parameters.AddWithValue("@harga", decimal.Parse(txtHargaSewa.Text));
-                        cmd.Parameters.AddWithValue("@stok", int.Parse(txtStok.Text));
+                    string idItem = txtIdItem.Text.Trim();
+                    string namaItem = txtNamaItem.Text.Trim();
+                    string deskripsi = txtDeskripsi.Text.Trim();
+                    decimal harga = decimal.Parse(txtHargaSewa.Text.Trim());
+                    int stok = int.Parse(txtStok.Text.Trim());
 
-                        if (cmd.ExecuteNonQuery() > 0)
-                        {
-                            MessageBox.Show("Data berhasil ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            LoadData();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Data gagal ditambahkan!", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Item_Sewa (id_item, nama_item, deskripsi, harga_sewa_per_jam, stok) VALUES (@id, @nama, @desc, @harga, @stok)", conn);
+                    cmd.Parameters.AddWithValue("@id", idItem);
+                    cmd.Parameters.AddWithValue("@nama", namaItem);
+                    cmd.Parameters.AddWithValue("@desc", deskripsi);
+                    cmd.Parameters.AddWithValue("@harga", harga);
+                    cmd.Parameters.AddWithValue("@stok", stok);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Data berhasil ditambahkan!");
+                    LoadData();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message);
+                    MessageBox.Show("Gagal menambahkan data: " + ex.Message);
                 }
+            
+               
             }
         }
 
@@ -101,33 +94,25 @@ namespace CRUDFUTSAL
         {
             if (dgvItem.SelectedRows.Count > 0)
             {
-                DialogResult confirm = MessageBox.Show("Yakin ingin menghapus item ini?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (confirm == DialogResult.Yes)
+                DialogResult result = MessageBox.Show("Yakin ingin menghapus data ini?", "Konfirmasi", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         try
                         {
-                            string idItem = dgvItem.SelectedRows[0].Cells["id_item"].Value.ToString();
                             conn.Open();
-                            string query = "DELETE FROM Item_Sewa WHERE id_item = @id_item";
-                            using (SqlCommand cmd = new SqlCommand(query, conn))
-                            {
-                                cmd.Parameters.AddWithValue("@id_item", idItem);
-                                if (cmd.ExecuteNonQuery() > 0)
-                                {
-                                    MessageBox.Show("Data berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    LoadData();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Data gagal dihapus!", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
+                            string idItem = txtIdItem.Text.Trim();
+                            SqlCommand cmd = new SqlCommand("DELETE FROM Item_Sewa WHERE id_item = @id", conn);
+                            cmd.Parameters.AddWithValue("@id", idItem);
+                            cmd.ExecuteNonQuery();
+
+                            MessageBox.Show("Data berhasil dihapus!");
+                            LoadData();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Error: " + ex.Message);
+                            MessageBox.Show("Gagal menghapus data: " + ex.Message);
                         }
                     }
                 }
@@ -146,40 +131,31 @@ namespace CRUDFUTSAL
                 {
                     try
                     {
-                        string idItem = dgvItem.SelectedRows[0].Cells["id_item"].Value.ToString();
-
                         conn.Open();
-                        string query = "UPDATE Item_Sewa SET nama_item = @nama_item, deskripsi = @deskripsi, harga_sewa_per_jam = @harga, stok = @stok WHERE id_item = @id_item";
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@id_item", idItem);
-                            cmd.Parameters.AddWithValue("@nama_item", txtNamaItem.Text.Trim());
-                            cmd.Parameters.AddWithValue("@deskripsi", txtDeskripsi.Text.Trim());
-                            cmd.Parameters.AddWithValue("@harga", decimal.Parse(txtHargaSewa.Text));
-                            cmd.Parameters.AddWithValue("@stok", int.Parse(txtStok.Text));
 
-                            if (cmd.ExecuteNonQuery() > 0)
-                            {
-                                MessageBox.Show("Data berhasil diubah!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                LoadData();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Data gagal diubah!", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
+                        string idItem = txtIdItem.Text.Trim();
+                        string namaItem = txtNamaItem.Text.Trim();
+                        string deskripsi = txtDeskripsi.Text.Trim();
+                        decimal harga = decimal.Parse(txtHargaSewa.Text.Trim());
+                        int stok = int.Parse(txtStok.Text.Trim());
+
+                        SqlCommand cmd = new SqlCommand("UPDATE Item_Sewa SET nama_item = @nama, deskripsi = @desc, harga_sewa_per_jam = @harga, stok = @stok WHERE id_item = @id", conn);
+                        cmd.Parameters.AddWithValue("@id", idItem);
+                        cmd.Parameters.AddWithValue("@nama", namaItem);
+                        cmd.Parameters.AddWithValue("@desc", deskripsi);
+                        cmd.Parameters.AddWithValue("@harga", harga);
+                        cmd.Parameters.AddWithValue("@stok", stok);
+
+                        cmd.ExecuteNonQuery();
+
+                        MessageBox.Show("Data berhasil diubah!");
+                        LoadData();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error: " + ex.Message);
+                        MessageBox.Show("Gagal mengubah data: " + ex.Message);
                     }
                 }
-                
-
-            }
-            else
-            {
-                MessageBox.Show("Pilih data yang akan diubah!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -192,11 +168,18 @@ namespace CRUDFUTSAL
         {
             if (e.RowIndex >= 0)
             {
-                txtNamaItem.Text = dgvItem.Rows[e.RowIndex].Cells["nama_item"].Value.ToString();
-                txtDeskripsi.Text = dgvItem.Rows[e.RowIndex].Cells["deskripsi"].Value.ToString();
-                txtHargaSewa.Text = dgvItem.Rows[e.RowIndex].Cells["harga_sewa_per_jam"].Value.ToString();
-                txtStok.Text = dgvItem.Rows[e.RowIndex].Cells["stok"].Value.ToString();
+                DataGridViewRow row = dgvItem.Rows[e.RowIndex];
+                txtIdItem.Text = row.Cells["id_item"].Value.ToString();
+                txtNamaItem.Text = row.Cells["nama_item"].Value.ToString();
+                txtDeskripsi.Text = row.Cells["deskripsi"].Value.ToString();
+                txtHargaSewa.Text = row.Cells["harga_sewa_per_jam"].Value.ToString();
+                txtStok.Text = row.Cells["stok"].Value.ToString();
             }
+        }
+
+        private void txtIdItem_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

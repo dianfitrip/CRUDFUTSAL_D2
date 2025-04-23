@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace CRUDFUTSAL
 {
@@ -36,44 +37,13 @@ namespace CRUDFUTSAL
 
         private void Peminjaman_Load(object sender, EventArgs e)
         {
-            LoadComboBox();
+         
+            combobox.Items.AddRange(new string[] { "Dipinjam", "Dikembalikan", "Terlambat" });
+
             LoadData();
         }
 
-        private void LoadComboBox()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    SqlCommand cmdPenyewa = new SqlCommand("SELECT id_penyewa, nama_penyewa FROM Penyewa", conn);
-                    SqlDataAdapter daPenyewa = new SqlDataAdapter(cmdPenyewa);
-                    DataTable dtPenyewa = new DataTable();
-                    daPenyewa.Fill(dtPenyewa);
-                    cmbNamaPenyewa.DataSource = dtPenyewa;
-                    cmbNamaPenyewa.DisplayMember = "nama_penyewa";
-                    cmbNamaPenyewa.ValueMember = "id_penyewa";
-
-                    SqlCommand cmdItem = new SqlCommand("SELECT id_item, nama_item FROM Item_Sewa", conn);
-                    SqlDataAdapter daItem = new SqlDataAdapter(cmdItem);
-                    DataTable dtItem = new DataTable();
-                    daItem.Fill(dtItem);
-                    cmbNamaItem.DataSource = dtItem;
-                    cmbNamaItem.DisplayMember = "nama_item";
-                    cmbNamaItem.ValueMember = "id_item";
-
-                    cmbStatus.Items.Clear();
-                    cmbStatus.Items.Add("Dipinjam");
-                    cmbStatus.Items.Add("Dikembalikan");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
-            }
-        }
+       
 
         private void LoadData()
         {
@@ -82,7 +52,7 @@ namespace CRUDFUTSAL
                 try
                 {
                     conn.Open();
-                    string query = "SELECT id_peminjaman, id_penyewa, id_item, tanggal_peminjaman, tanggal_jatuh_tempo, total_harga, status FROM Peminjaman";
+                    string query = "SELECT * FROM Peminjaman";
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -93,6 +63,7 @@ namespace CRUDFUTSAL
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
+
         }
 
         private void btnTambah_Click(object sender, EventArgs e)
@@ -102,19 +73,18 @@ namespace CRUDFUTSAL
                 try
                 {
                     conn.Open();
-                    string query = "INSERT INTO Peminjaman (id_peminjaman, id_penyewa, id_item, tanggal_peminjaman, tanggal_jatuh_tempo, total_harga, status) " +
-                                   "VALUES (@id_peminjaman, @id_penyewa, @id_item, @tanggal_peminjaman, @tanggal_jatuh_tempo, @total_harga, @status)";
+                    string query = "INSERT INTO Peminjaman (id_penyewa, id_item, tanggal_pinjam, tanggal_jatuh_tempo, total_harga, status_peminjaman) " +
+                                   "VALUES (@id_penyewa, @id_item, @tanggal_pinjam, @tanggal_jatuh_tempo, @total_harga, @status_peminjaman)";
                     SqlCommand cmd = new SqlCommand(query, conn);
 
-                    string idPeminjaman = "PM" + DateTime.Now.ToString("ddMMyyyyHHmmss");
+                    
 
-                    cmd.Parameters.AddWithValue("@id_peminjaman", idPeminjaman);
-                    cmd.Parameters.AddWithValue("@id_penyewa", cmbNamaPenyewa.SelectedValue);
-                    cmd.Parameters.AddWithValue("@id_item", cmbNamaItem.SelectedValue);
-                    cmd.Parameters.AddWithValue("@tanggal_peminjaman", TanggalPinjam.Value);
-                    cmd.Parameters.AddWithValue("@tanggal_jatuh_tempo", JatuhTempo.Value);
+                    cmd.Parameters.AddWithValue("@id_penyewa", txtIdPenyewa.Text);
+                    cmd.Parameters.AddWithValue("@id_item", txtIdItem.Text);
+                    cmd.Parameters.AddWithValue("@tanggal_pinjam", DateTime.Parse(txtTanggalPinjam.Text));
+                    cmd.Parameters.AddWithValue("@tanggal_jatuh_tempo", DateTime.Parse(txtTanggalJatuhTempo.Text));
                     cmd.Parameters.AddWithValue("@total_harga", decimal.Parse(txtTotalHarga.Text));
-                    cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
+                    cmd.Parameters.AddWithValue("@status_peminjaman", combobox.Text);
 
                     if (cmd.ExecuteNonQuery() > 0)
                     {
@@ -183,16 +153,16 @@ namespace CRUDFUTSAL
                     {
                         conn.Open();
                         string idPeminjaman = dgvPeminjaman.SelectedRows[0].Cells["id_peminjaman"].Value.ToString();
-                        string query = "UPDATE Peminjaman SET id_penyewa = @id_penyewa, id_item = @id_item, tanggal_peminjaman = @tanggal_peminjaman, tanggal_jatuh_tempo = @tanggal_jatuh_tempo, total_harga = @total_harga, status = @status WHERE id_peminjaman = @id_peminjaman";
+                        string query = "UPDATE Peminjaman SET id_penyewa = @id_penyewa, id_item = @id_item, tanggal_pinjam = @tanggal_pinjam, tanggal_jatuh_tempo = @tanggal_jatuh_tempo, total_harga = @total_harga, status_peminjaman = @status_peminjaman WHERE id_peminjaman = @id_peminjaman";
                         SqlCommand cmd = new SqlCommand(query, conn);
 
                         cmd.Parameters.AddWithValue("@id_peminjaman", idPeminjaman);
-                        cmd.Parameters.AddWithValue("@id_penyewa", cmbNamaPenyewa.SelectedValue);
-                        cmd.Parameters.AddWithValue("@id_item", cmbNamaItem.SelectedValue);
-                        cmd.Parameters.AddWithValue("@tanggal_peminjaman", TanggalPinjam.Value);
-                        cmd.Parameters.AddWithValue("@tanggal_jatuh_tempo", JatuhTempo.Value);
+                        cmd.Parameters.AddWithValue("@id_penyewa", txtIdPenyewa.Text);
+                        cmd.Parameters.AddWithValue("@id_item", txtIdItem.Text);
+                        cmd.Parameters.AddWithValue("@tanggal_pinjam", DateTime.Parse(txtTanggalPinjam.Text));
+                        cmd.Parameters.AddWithValue("@tanggal_jatuh_tempo", DateTime.Parse(txtTanggalJatuhTempo.Text));
                         cmd.Parameters.AddWithValue("@total_harga", decimal.Parse(txtTotalHarga.Text));
-                        cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
+                        cmd.Parameters.AddWithValue("@status_peminjaman", combobox.Text);
 
                         if (cmd.ExecuteNonQuery() > 0)
                         {
@@ -219,6 +189,16 @@ namespace CRUDFUTSAL
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

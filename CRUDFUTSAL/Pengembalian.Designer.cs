@@ -34,17 +34,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.cmbIDPeminjaman = new System.Windows.Forms.ComboBox();
-            this.TanggalPengembalian = new System.Windows.Forms.DateTimePicker();
-            this.txtDendaKeterlambatan = new System.Windows.Forms.TextBox();
-            this.txtKondisi = new System.Windows.Forms.TextBox();
+            this.txtKondisiPengembalian = new System.Windows.Forms.TextBox();
             this.txtJumlahDenda = new System.Windows.Forms.TextBox();
-            this.txtAlasan = new System.Windows.Forms.TextBox();
+            this.txtAlasanDenda = new System.Windows.Forms.TextBox();
             this.btnTambah = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.txtDendaKeterlambatan = new System.Windows.Forms.TextBox();
+            this.txtIdPeminjaman = new System.Windows.Forms.TextBox();
+            this.txtTanggalPengembalian = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,34 +102,12 @@
             this.label6.TabIndex = 5;
             this.label6.Text = "Alasan Denda";
             // 
-            // cmbIDPeminjaman
+            // txtKondisiPengembalian
             // 
-            this.cmbIDPeminjaman.FormattingEnabled = true;
-            this.cmbIDPeminjaman.Location = new System.Drawing.Point(244, 33);
-            this.cmbIDPeminjaman.Name = "cmbIDPeminjaman";
-            this.cmbIDPeminjaman.Size = new System.Drawing.Size(205, 24);
-            this.cmbIDPeminjaman.TabIndex = 6;
-            // 
-            // TanggalPengembalian
-            // 
-            this.TanggalPengembalian.Location = new System.Drawing.Point(244, 69);
-            this.TanggalPengembalian.Name = "TanggalPengembalian";
-            this.TanggalPengembalian.Size = new System.Drawing.Size(205, 22);
-            this.TanggalPengembalian.TabIndex = 7;
-            // 
-            // txtDendaKeterlambatan
-            // 
-            this.txtDendaKeterlambatan.Location = new System.Drawing.Point(244, 97);
-            this.txtDendaKeterlambatan.Name = "txtDendaKeterlambatan";
-            this.txtDendaKeterlambatan.Size = new System.Drawing.Size(205, 22);
-            this.txtDendaKeterlambatan.TabIndex = 8;
-            // 
-            // txtKondisi
-            // 
-            this.txtKondisi.Location = new System.Drawing.Point(244, 134);
-            this.txtKondisi.Name = "txtKondisi";
-            this.txtKondisi.Size = new System.Drawing.Size(205, 22);
-            this.txtKondisi.TabIndex = 9;
+            this.txtKondisiPengembalian.Location = new System.Drawing.Point(244, 134);
+            this.txtKondisiPengembalian.Name = "txtKondisiPengembalian";
+            this.txtKondisiPengembalian.Size = new System.Drawing.Size(205, 22);
+            this.txtKondisiPengembalian.TabIndex = 9;
             // 
             // txtJumlahDenda
             // 
@@ -138,12 +116,12 @@
             this.txtJumlahDenda.Size = new System.Drawing.Size(205, 22);
             this.txtJumlahDenda.TabIndex = 10;
             // 
-            // txtAlasan
+            // txtAlasanDenda
             // 
-            this.txtAlasan.Location = new System.Drawing.Point(244, 211);
-            this.txtAlasan.Name = "txtAlasan";
-            this.txtAlasan.Size = new System.Drawing.Size(205, 22);
-            this.txtAlasan.TabIndex = 11;
+            this.txtAlasanDenda.Location = new System.Drawing.Point(244, 211);
+            this.txtAlasanDenda.Name = "txtAlasanDenda";
+            this.txtAlasanDenda.Size = new System.Drawing.Size(205, 22);
+            this.txtAlasanDenda.TabIndex = 11;
             // 
             // btnTambah
             // 
@@ -195,22 +173,43 @@
             this.dataGridView1.Size = new System.Drawing.Size(611, 150);
             this.dataGridView1.TabIndex = 16;
             // 
+            // txtDendaKeterlambatan
+            // 
+            this.txtDendaKeterlambatan.Location = new System.Drawing.Point(244, 100);
+            this.txtDendaKeterlambatan.Name = "txtDendaKeterlambatan";
+            this.txtDendaKeterlambatan.Size = new System.Drawing.Size(205, 22);
+            this.txtDendaKeterlambatan.TabIndex = 17;
+            // 
+            // txtIdPeminjaman
+            // 
+            this.txtIdPeminjaman.Location = new System.Drawing.Point(244, 38);
+            this.txtIdPeminjaman.Name = "txtIdPeminjaman";
+            this.txtIdPeminjaman.Size = new System.Drawing.Size(205, 22);
+            this.txtIdPeminjaman.TabIndex = 18;
+            // 
+            // txtTanggalPengembalian
+            // 
+            this.txtTanggalPengembalian.Location = new System.Drawing.Point(244, 69);
+            this.txtTanggalPengembalian.Name = "txtTanggalPengembalian";
+            this.txtTanggalPengembalian.Size = new System.Drawing.Size(205, 22);
+            this.txtTanggalPengembalian.TabIndex = 19;
+            // 
             // Pengembalian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtTanggalPengembalian);
+            this.Controls.Add(this.txtIdPeminjaman);
+            this.Controls.Add(this.txtDendaKeterlambatan);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnHapus);
             this.Controls.Add(this.btnTambah);
-            this.Controls.Add(this.txtAlasan);
+            this.Controls.Add(this.txtAlasanDenda);
             this.Controls.Add(this.txtJumlahDenda);
-            this.Controls.Add(this.txtKondisi);
-            this.Controls.Add(this.txtDendaKeterlambatan);
-            this.Controls.Add(this.TanggalPengembalian);
-            this.Controls.Add(this.cmbIDPeminjaman);
+            this.Controls.Add(this.txtKondisiPengembalian);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -234,16 +233,16 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cmbIDPeminjaman;
-        private System.Windows.Forms.DateTimePicker TanggalPengembalian;
-        private System.Windows.Forms.TextBox txtDendaKeterlambatan;
-        private System.Windows.Forms.TextBox txtKondisi;
+        private System.Windows.Forms.TextBox txtKondisiPengembalian;
         private System.Windows.Forms.TextBox txtJumlahDenda;
-        private System.Windows.Forms.TextBox txtAlasan;
+        private System.Windows.Forms.TextBox txtAlasanDenda;
         private System.Windows.Forms.Button btnTambah;
         private System.Windows.Forms.Button btnHapus;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TextBox txtDendaKeterlambatan;
+        private System.Windows.Forms.TextBox txtIdPeminjaman;
+        private System.Windows.Forms.TextBox txtTanggalPengembalian;
     }
 }
