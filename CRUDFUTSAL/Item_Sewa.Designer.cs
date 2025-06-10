@@ -43,6 +43,8 @@
             this.dgvItem = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
             this.txtIdItem = new System.Windows.Forms.TextBox();
+            this.btnMenu = new System.Windows.Forms.Button();
+            this.lblMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -159,7 +161,7 @@
             this.dgvItem.RowTemplate.Height = 24;
             this.dgvItem.Size = new System.Drawing.Size(446, 150);
             this.dgvItem.TabIndex = 12;
-            this.dgvItem.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellContentClick);
+            this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
             // 
             // label5
             // 
@@ -178,11 +180,32 @@
             this.txtIdItem.TabIndex = 14;
             this.txtIdItem.TextChanged += new System.EventHandler(this.txtIdItem_TextChanged);
             // 
+            // btnMenu
+            // 
+            this.btnMenu.Location = new System.Drawing.Point(535, 181);
+            this.btnMenu.Name = "btnMenu";
+            this.btnMenu.Size = new System.Drawing.Size(75, 23);
+            this.btnMenu.TabIndex = 15;
+            this.btnMenu.Text = "Menu";
+            this.btnMenu.UseVisualStyleBackColor = true;
+            this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Location = new System.Drawing.Point(60, 383);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(64, 16);
+            this.lblMessage.TabIndex = 16;
+            this.lblMessage.Text = "Message";
+            // 
             // Item_Sewa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblMessage);
+            this.Controls.Add(this.btnMenu);
             this.Controls.Add(this.txtIdItem);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dgvItem);
@@ -224,5 +247,7 @@
         private System.Windows.Forms.DataGridView dgvItem;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtIdItem;
+        private System.Windows.Forms.Button btnMenu;
+        private System.Windows.Forms.Label lblMessage;
     }
 }

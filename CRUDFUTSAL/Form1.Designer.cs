@@ -33,11 +33,12 @@
             this.btnPeminjaman = new System.Windows.Forms.Button();
             this.btnPengembalian = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.btnReport = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnPenyewa
             // 
-            this.btnPenyewa.Location = new System.Drawing.Point(122, 83);
+            this.btnPenyewa.Location = new System.Drawing.Point(36, 83);
             this.btnPenyewa.Name = "btnPenyewa";
             this.btnPenyewa.Size = new System.Drawing.Size(92, 53);
             this.btnPenyewa.TabIndex = 0;
@@ -47,7 +48,7 @@
             // 
             // btnItemSewa
             // 
-            this.btnItemSewa.Location = new System.Drawing.Point(255, 83);
+            this.btnItemSewa.Location = new System.Drawing.Point(168, 83);
             this.btnItemSewa.Name = "btnItemSewa";
             this.btnItemSewa.Size = new System.Drawing.Size(84, 56);
             this.btnItemSewa.TabIndex = 1;
@@ -57,7 +58,7 @@
             // 
             // btnPeminjaman
             // 
-            this.btnPeminjaman.Location = new System.Drawing.Point(386, 85);
+            this.btnPeminjaman.Location = new System.Drawing.Point(295, 82);
             this.btnPeminjaman.Name = "btnPeminjaman";
             this.btnPeminjaman.Size = new System.Drawing.Size(106, 54);
             this.btnPeminjaman.TabIndex = 2;
@@ -67,7 +68,7 @@
             // 
             // btnPengembalian
             // 
-            this.btnPengembalian.Location = new System.Drawing.Point(535, 87);
+            this.btnPengembalian.Location = new System.Drawing.Point(444, 83);
             this.btnPengembalian.Name = "btnPengembalian";
             this.btnPengembalian.Size = new System.Drawing.Size(105, 50);
             this.btnPengembalian.TabIndex = 3;
@@ -85,11 +86,22 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // btnReport
+            // 
+            this.btnReport.Location = new System.Drawing.Point(611, 83);
+            this.btnReport.Name = "btnReport";
+            this.btnReport.Size = new System.Drawing.Size(87, 53);
+            this.btnReport.TabIndex = 5;
+            this.btnReport.Text = "Report";
+            this.btnReport.UseVisualStyleBackColor = true;
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnReport);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnPengembalian);
             this.Controls.Add(this.btnPeminjaman);
@@ -109,6 +121,7 @@
         private System.Windows.Forms.Button btnPeminjaman;
         private System.Windows.Forms.Button btnPengembalian;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnReport;
     }
 }
 

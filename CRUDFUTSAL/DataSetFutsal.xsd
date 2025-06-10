@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetFutsal" targetNamespace="http://tempuri.org/DataSetFutsal.xsd" xmlns:mstns="http://tempuri.org/DataSetFutsal.xsd" xmlns="http://tempuri.org/DataSetFutsal.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="Booking_futsalConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Booking_futsalConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.CRUDFUTSAL.Properties.Settings.GlobalReference.Default.Booking_futsalConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="Booking_futsalConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Penyewa.nama_penyewa, Peminjaman.id_peminjaman, Item_Sewa.nama_item, Peminjaman.tanggal_pinjam, Pengembalian.tanggal_pengembalian, Pengembalian.tanggal_jatuh_tempo, Peminjaman.jumlah, Pengembalian.jumlah_total, 
+                  Pengembalian.jumlah_denda
+FROM     Peminjaman INNER JOIN
+                  Pengembalian ON Peminjaman.id_peminjaman = Pengembalian.id_peminjaman INNER JOIN
+                  Penyewa ON Peminjaman.id_penyewa = Penyewa.id_penyewa INNER JOIN
+                  Item_Sewa ON Peminjaman.id_item = Item_Sewa.id_item</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="nama_penyewa" DataSetColumn="nama_penyewa" />
+              <Mapping SourceColumn="id_peminjaman" DataSetColumn="id_peminjaman" />
+              <Mapping SourceColumn="nama_item" DataSetColumn="nama_item" />
+              <Mapping SourceColumn="tanggal_pinjam" DataSetColumn="tanggal_pinjam" />
+              <Mapping SourceColumn="tanggal_pengembalian" DataSetColumn="tanggal_pengembalian" />
+              <Mapping SourceColumn="tanggal_jatuh_tempo" DataSetColumn="tanggal_jatuh_tempo" />
+              <Mapping SourceColumn="jumlah" DataSetColumn="jumlah" />
+              <Mapping SourceColumn="jumlah_total" DataSetColumn="jumlah_total" />
+              <Mapping SourceColumn="jumlah_denda" DataSetColumn="jumlah_denda" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetFutsal" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="DataSetFutsal" msprop:Generator_DataSetName="DataSetFutsal">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nama_penyewa" msprop:Generator_ColumnPropNameInRow="nama_penyewa" msprop:Generator_ColumnPropNameInTable="nama_penyewaColumn" msprop:Generator_ColumnVarNameInTable="columnnama_penyewa" msprop:Generator_UserColumnName="nama_penyewa">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="id_peminjaman" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="id_peminjaman" msprop:Generator_ColumnPropNameInTable="id_peminjamanColumn" msprop:Generator_ColumnVarNameInTable="columnid_peminjaman" msprop:Generator_UserColumnName="id_peminjaman" type="xs:int" />
+              <xs:element name="nama_item" msprop:Generator_ColumnPropNameInRow="nama_item" msprop:Generator_ColumnPropNameInTable="nama_itemColumn" msprop:Generator_ColumnVarNameInTable="columnnama_item" msprop:Generator_UserColumnName="nama_item">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="tanggal_pinjam" msprop:Generator_ColumnPropNameInRow="tanggal_pinjam" msprop:Generator_ColumnPropNameInTable="tanggal_pinjamColumn" msprop:Generator_ColumnVarNameInTable="columntanggal_pinjam" msprop:Generator_UserColumnName="tanggal_pinjam" type="xs:dateTime" />
+              <xs:element name="tanggal_pengembalian" msprop:Generator_ColumnPropNameInRow="tanggal_pengembalian" msprop:Generator_ColumnPropNameInTable="tanggal_pengembalianColumn" msprop:Generator_ColumnVarNameInTable="columntanggal_pengembalian" msprop:Generator_UserColumnName="tanggal_pengembalian" type="xs:dateTime" />
+              <xs:element name="tanggal_jatuh_tempo" msprop:Generator_ColumnPropNameInRow="tanggal_jatuh_tempo" msprop:Generator_ColumnPropNameInTable="tanggal_jatuh_tempoColumn" msprop:Generator_ColumnVarNameInTable="columntanggal_jatuh_tempo" msprop:Generator_UserColumnName="tanggal_jatuh_tempo" type="xs:dateTime" />
+              <xs:element name="jumlah" msprop:Generator_ColumnPropNameInRow="jumlah" msprop:Generator_ColumnPropNameInTable="jumlahColumn" msprop:Generator_ColumnVarNameInTable="columnjumlah" msprop:Generator_UserColumnName="jumlah" type="xs:int" />
+              <xs:element name="jumlah_total" msprop:Generator_ColumnPropNameInRow="jumlah_total" msprop:Generator_ColumnPropNameInTable="jumlah_totalColumn" msprop:Generator_ColumnVarNameInTable="columnjumlah_total" msprop:Generator_UserColumnName="jumlah_total" type="xs:decimal" />
+              <xs:element name="jumlah_denda" msprop:Generator_ColumnPropNameInRow="jumlah_denda" msprop:Generator_ColumnPropNameInTable="jumlah_dendaColumn" msprop:Generator_ColumnVarNameInTable="columnjumlah_denda" msprop:Generator_UserColumnName="jumlah_denda" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:id_peminjaman" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

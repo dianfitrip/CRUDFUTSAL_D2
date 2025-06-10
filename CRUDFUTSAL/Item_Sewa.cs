@@ -13,7 +13,7 @@ namespace CRUDFUTSAL
 {
     public partial class Item_Sewa : Form
     {
-        private string connectionString = "Data Source=DAEN\\PIYOPUYU;Initial Catalog=Bfutsal;Integrated Security=True";
+        private string connectionString = "Data Source=DAEN\\PIYOPUYU;Initial Catalog=Booking_futsal;Integrated Security=True";
         public Item_Sewa()
         {
             InitializeComponent();
@@ -57,36 +57,60 @@ namespace CRUDFUTSAL
 
         private void btnTambah_Click(object sender, EventArgs e)
         {
+            // Validasi input
+            if (!decimal.TryParse(txtHargaSewa.Text, out decimal harga) || harga <= 0)
+            {
+                MessageBox.Show("Harga sewa harus lebih besar dari 0", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!int.TryParse(txtStok.Text, out int stok) || stok < 0)
+            {
+                MessageBox.Show("Stok tidak boleh negatif", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "Apakah Anda yakin ingin menambahkan data ini?",
+                "Konfirmasi",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirm != DialogResult.Yes)
+                return;
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                SqlTransaction transaction = null;
+
                 try
                 {
                     conn.Open();
+                    transaction = conn.BeginTransaction();
 
-                    string idItem = txtIdItem.Text.Trim();
-                    string namaItem = txtNamaItem.Text.Trim();
-                    string deskripsi = txtDeskripsi.Text.Trim();
-                    decimal harga = decimal.Parse(txtHargaSewa.Text.Trim());
-                    int stok = int.Parse(txtStok.Text.Trim());
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertItemSewa", conn, transaction))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Item_Sewa (id_item, nama_item, deskripsi, harga_sewa_per_jam, stok) VALUES (@id, @nama, @desc, @harga, @stok)", conn);
-                    cmd.Parameters.AddWithValue("@id", idItem);
-                    cmd.Parameters.AddWithValue("@nama", namaItem);
-                    cmd.Parameters.AddWithValue("@desc", deskripsi);
-                    cmd.Parameters.AddWithValue("@harga", harga);
-                    cmd.Parameters.AddWithValue("@stok", stok);
+                        cmd.Parameters.AddWithValue("@IdItem", txtIdItem.Text.Trim());
+                        cmd.Parameters.AddWithValue("@NamaItem", txtNamaItem.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Deskripsi", txtDeskripsi.Text.Trim());
+                        cmd.Parameters.AddWithValue("@HargaSewaPerJam", harga);
+                        cmd.Parameters.AddWithValue("@Stok", stok);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    MessageBox.Show("Data berhasil ditambahkan!");
+                    transaction.Commit();
+                    lblMessage.Text = "Data berhasil ditambahkan!";
                     LoadData();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Gagal menambahkan data: " + ex.Message);
+                    transaction?.Rollback();
+                    lblMessage.Text = "Gagal menambahkan data: " + ex.Message;
                 }
-            
-               
             }
         }
 
@@ -94,67 +118,119 @@ namespace CRUDFUTSAL
         {
             if (dgvItem.SelectedRows.Count > 0)
             {
-                DialogResult result = MessageBox.Show("Yakin ingin menghapus data ini?", "Konfirmasi", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        try
-                        {
-                            conn.Open();
-                            string idItem = txtIdItem.Text.Trim();
-                            SqlCommand cmd = new SqlCommand("DELETE FROM Item_Sewa WHERE id_item = @id", conn);
-                            cmd.Parameters.AddWithValue("@id", idItem);
-                            cmd.ExecuteNonQuery();
+                DialogResult result = MessageBox.Show(
+                    "Apakah Anda yakin ingin menghapus data ini?",
+                    "Konfirmasi",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
 
-                            MessageBox.Show("Data berhasil dihapus!");
-                            LoadData();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Gagal menghapus data: " + ex.Message);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Pilih data terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+                if (result != DialogResult.Yes)
+                    return;
 
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            if (dgvItem.SelectedRows.Count > 0)
-            {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     try
                     {
                         conn.Open();
+                        using (SqlCommand cmd = new SqlCommand("sp_DeleteItemSewa", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@IdItem", txtIdItem.Text.Trim());
 
-                        string idItem = txtIdItem.Text.Trim();
-                        string namaItem = txtNamaItem.Text.Trim();
-                        string deskripsi = txtDeskripsi.Text.Trim();
-                        decimal harga = decimal.Parse(txtHargaSewa.Text.Trim());
-                        int stok = int.Parse(txtStok.Text.Trim());
-
-                        SqlCommand cmd = new SqlCommand("UPDATE Item_Sewa SET nama_item = @nama, deskripsi = @desc, harga_sewa_per_jam = @harga, stok = @stok WHERE id_item = @id", conn);
-                        cmd.Parameters.AddWithValue("@id", idItem);
-                        cmd.Parameters.AddWithValue("@nama", namaItem);
-                        cmd.Parameters.AddWithValue("@desc", deskripsi);
-                        cmd.Parameters.AddWithValue("@harga", harga);
-                        cmd.Parameters.AddWithValue("@stok", stok);
-
-                        cmd.ExecuteNonQuery();
-
-                        MessageBox.Show("Data berhasil diubah!");
+                            // Execute and handle response
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    reader.Read();
+                                    if (reader.FieldCount == 1) // Success message
+                                    {
+                                        lblMessage.Text = reader.GetString(0);
+                                    }
+                                    else // Error occurred
+                                    {
+                                        lblMessage.Text = reader.GetString(0);
+                                        // You could also use ErrorSeverity and ErrorState if needed
+                                    }
+                                }
+                            }
+                        }
                         LoadData();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Gagal mengubah data: " + ex.Message);
+                        lblMessage.Text = "Gagal menghapus data: " + ex.Message;
                     }
+                }
+            }
+            else
+            {
+                lblMessage.Text = "Pilih data terlebih dahulu!";
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvItem.SelectedRows.Count == 0)
+            {
+                lblMessage.Text = "Pilih data terlebih dahulu!";
+                return;
+            }
+
+            // Validasi input
+            if (!decimal.TryParse(txtHargaSewa.Text, out decimal harga) || harga <= 0)
+            {
+                MessageBox.Show("Harga sewa harus lebih besar dari 0", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!int.TryParse(txtStok.Text, out int stok) || stok < 0)
+            {
+                MessageBox.Show("Stok tidak boleh negatif", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Apakah Anda yakin ingin mengedit data ini?",
+                "Konfirmasi",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result != DialogResult.Yes)
+                return;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlTransaction transaction = null;
+
+                try
+                {
+                    conn.Open();
+                    transaction = conn.BeginTransaction();
+
+                    using (SqlCommand cmd = new SqlCommand("sp_UpdateItemSewa", conn, transaction))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@id_item", txtIdItem.Text.Trim());
+                        cmd.Parameters.AddWithValue("@nama_item", txtNamaItem.Text.Trim());
+                        cmd.Parameters.AddWithValue("@deskripsi", txtDeskripsi.Text.Trim());
+                        cmd.Parameters.AddWithValue("@harga_sewa_per_jam", harga);
+                        cmd.Parameters.AddWithValue("@stok", stok);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    lblMessage.Text = "Data berhasil diupdate!";
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    lblMessage.Text = "Error: " + ex.Message;
                 }
             }
         }
@@ -162,9 +238,23 @@ namespace CRUDFUTSAL
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadData();
+        }  
+
+
+        private void txtIdItem_TextChanged(object sender, EventArgs e)
+        {
+            
         }
 
-        private void dgvItem_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+
+            this.Hide();
+        }
+
+        private void dgvItem_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
@@ -175,11 +265,6 @@ namespace CRUDFUTSAL
                 txtHargaSewa.Text = row.Cells["harga_sewa_per_jam"].Value.ToString();
                 txtStok.Text = row.Cells["stok"].Value.ToString();
             }
-        }
-
-        private void txtIdItem_TextChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }
